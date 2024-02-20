@@ -1,0 +1,30 @@
+version: '3.8'
+services:
+  app:
+    image: springbootregistration/docker-registerapp:0.0.1
+    ports:
+      - 8088:8080
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://docker-mysql:3306/codejavadb?autoReconnect=true&useSSL=false
+      REDIS_HOST: cache
+      REDIS_PORT: 6379
+    depends_on:
+      - docker-mysql
+      - docker-redis
+
+
+  docker-mysql:
+    image: mysql:5.7
+    environment:
+       MYSQL_ROOT_PASSWORD: admin
+       MYSQL_DATABASE: codejavadb
+
+       MYSQL_PASSWORD: admin
+    ports:
+      - 3307:3306
+
+  docker-redis:
+    image: redis:latest
+    restart: always
+    ports:
+      - "6379:6379"
